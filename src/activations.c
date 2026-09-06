@@ -32,3 +32,12 @@ Matrix softmax(const Matrix* m){
     return res;
 }
 
+Matrix softmax_cross_entropy_backward(const Matrix* pred, Matrix* target){
+    Matrix res = matrix_create(pred->rows, pred->cols);
+
+    for(int i=0;i<pred->rows * pred-> cols;i++){
+        res.data[i]=pred->data[i]-target->data[i];
+    }
+    return res;
+}
+
