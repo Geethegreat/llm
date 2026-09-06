@@ -94,8 +94,8 @@ Matrix matrix_multiply_scalar(const Matrix* m, float value){
 void matrix_print(const Matrix* m){
     for(int i =0;i<m->rows;i++){
         for(int j=0;j<m->cols;j++){
-            printf("%d ", matrix_get(m, i, j));
+            printf("%f ", matrix_get(m, i, j));
         }
-        prtinf("\n");
+        printf("\n");
     }
 }
