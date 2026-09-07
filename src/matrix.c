@@ -22,7 +22,7 @@ void matrix_free(Matrix* m){
 }
 
 
-void matrix_set(Matrix* m, int row, int col, int value){
+void matrix_set(Matrix* m, int row, int col, float value){
     m->data[row * m->cols + col]=value;
 }
 
@@ -88,6 +88,12 @@ Matrix matrix_multiply_scalar(const Matrix* m, float value){
         res.data[i]=m->data[i] * value;
     }
     return res;
+}
+
+void matrix_fill_random(Matrix* m, float min, float max){
+    for(int i=0;i<m->rows * m->cols;i++){
+        m->data[i]=((float)rand()/(float)(RAND_MAX)) * (max - min) + min;
+    }
 }
 
 
