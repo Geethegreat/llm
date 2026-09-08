@@ -63,7 +63,6 @@ char dataset_decode(const Dataset* dataset, int index){
 }
 
 void dataset_sample(const Dataset* dataset, int context_length, int* context_ids_out, int* target_id_out){
-    srand(time(NULL));
     int start = rand()  % (dataset->text_length - context_length -1);
 
     for(int i=0;i<context_length;i++){
