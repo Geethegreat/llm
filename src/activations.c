@@ -19,10 +19,13 @@ Matrix relu(const Matrix* m){
 
 Matrix softmax(const Matrix* m){
         Matrix res = matrix_create(m->rows, m->cols);
-        float sum =0.0f;
-
+        float sum =0.0f, max_logit = -INFINITY;
+         
         for(int i=0;i<m->rows * m-> cols;i++){
-            res.data[i]= expf(m->data[i]);
+            max_logit = m->data[i] > max_logit ? m->data[i] : max_logit;
+        }
+        for(int i=0;i<m->rows * m-> cols;i++){
+            res.data[i]= expf(m->data[i] - max_logit);
             sum+=res.data[i];            
         }
 
