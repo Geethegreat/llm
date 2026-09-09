@@ -48,6 +48,11 @@ Matrix matrix_add(const Matrix* a ,const Matrix* b){
 Matrix matrix_multiply(const Matrix* a ,const Matrix* b){
     Matrix res= matrix_create(a->rows,b->cols);
 
+    if(a->cols != b->rows){
+        fprintf(stderr, "Matrix dimensions do not match for multiplication: %d x %d and %d x %d\n", a->rows, a->cols, b->rows, b->cols);
+        exit(EXIT_FAILURE);
+    }
+
     matrix_fill(&res,0.0f);
 
     for(int i =0;i<a->rows;i++){
@@ -94,6 +99,16 @@ void matrix_fill_random(Matrix* m, float min, float max){
     for(int i=0;i<m->rows * m->cols;i++){
         m->data[i]=((float)rand()/(float)(RAND_MAX)) * (max - min) + min;
     }
+}
+
+
+Matrix matrix_flatten(Matrix* m){
+    Matrix res = matrix_create(1, m->rows * m->cols);
+
+    for(int i=0;i<m->rows * m->cols;i++){
+        res.data[i]=m->data[i];
+    }
+    return res;
 }
 
 

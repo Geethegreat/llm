@@ -21,6 +21,7 @@ void matrix_fill(Matrix* m, float value);
 Matrix matrix_add(const Matrix* a ,const Matrix* b);
 Matrix matrix_multiply(const Matrix* a ,const Matrix* b);
 Matrix matrix_transpose(const Matrix* m);
+Matrix matrix_flatten(Matrix* m);
 
 Matrix matrix_add_scalar(const Matrix* m, float value);
 Matrix matrix_multiply_scalar(const Matrix* m, float value);
