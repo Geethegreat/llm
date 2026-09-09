@@ -44,3 +44,12 @@ Matrix softmax_cross_entropy_backward(const Matrix* pred, Matrix* target){
     return res;
 }
 
+
+float cross_entropy_loss(const Matrix* pred, const Matrix* target){
+    float loss = 0.0f;
+
+    for(int i=0;i<pred->rows * pred-> cols;i++){
+        loss -= target->data[i] * logf(pred->data[i] + 1e-9f);
+    }
+    return loss;
+}
