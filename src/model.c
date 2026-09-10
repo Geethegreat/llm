@@ -158,7 +158,7 @@ void model_update(Model* model, Gradients* grad, float lr){
 int model_predict(const Model* model, int* context_ids){
     ForwardCache cache;
 
-    model_forward(model, &context_ids, &cache);
+    model_forward(model, context_ids, &cache);
 
     //finding the highest probability of all probs
     int best_id = 0;
