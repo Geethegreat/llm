@@ -154,6 +154,25 @@ void model_update(Model* model, Gradients* grad, float lr){
     for(int i=0; i<model->B2.rows*model->B2.cols; i++) model->B2.data[i] -= lr * grad->dB2.data[i];
 }
 
+// greedy decoding
+int model_predict(const Model* model, int* context_ids){
+    ForwardCache cache;
+
+    model_forward(model, &context_ids, &cache);
+
+    //finding the highest probability of all probs
+    int best_id = 0;
+    float highest_probs = cache.probs.data[0];
+
+    for(int i =1;i<model->vocab_size;i++){
+        if(cache.probs.data[i]>highest_probs){
+            highest_probs = cache.probs.data[i];
+            best_id = i;
+        }
+    }
+    return best_id;
+}
+
 
 float model_loss(const Matrix* pred, int target){
     float p = pred->data[target];

@@ -38,6 +38,8 @@ float model_loss(const Matrix* pred, int target);
 
 float numerical_gradient_check(Model* model, float* param, int* context_ids, int target_id);
 
+int model_predict(const Model* model, int* context_ids);
+
 void model_free(Model* model);
 
 
