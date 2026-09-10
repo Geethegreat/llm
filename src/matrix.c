@@ -111,6 +111,14 @@ Matrix matrix_flatten(Matrix* m){
     return res;
 }
 
+Matrix matrix_substract(const Matrix* a, const Matrix* b){
+    Matrix res = matrix_create(a->rows, a->cols);
+    for(int i =0;i< a->rows * a->cols;i++){
+        res.data[i]=a->data[i]-b->data[i];
+    }
+    return res;
+}
+
 
 void matrix_print(const Matrix* m){
     for(int i =0;i<m->rows;i++){

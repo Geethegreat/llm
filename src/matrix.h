@@ -25,6 +25,7 @@ Matrix matrix_flatten(Matrix* m);
 
 Matrix matrix_add_scalar(const Matrix* m, float value);
 Matrix matrix_multiply_scalar(const Matrix* m, float value);
+Matrix matrix_substract(const Matrix* a, const Matrix* b);
 
 void matrix_print(const Matrix* m);
 
