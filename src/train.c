@@ -26,10 +26,10 @@ void train_model(Model* model, int steps, Dataset* dataset){
         matrix_free(&cache.X); matrix_free(&cache.H); matrix_free(&cache.probs);
         matrix_free(&grad.dC); matrix_free(&grad.dW1); matrix_free(&grad.dB1); matrix_free(&grad.dW2); matrix_free(&grad.dB2);
         
-        if(i % 2000 == 0 && i > 0){
-            printf("step %d, avg loss: %f\n", i, running_loss / 2000.0f);
-            running_loss = 0.0f;
-        }
+        // if(i % 2000 == 0 && i > 0){
+        //   //  printf("step %d, avg loss: %f\n", i, running_loss / 2000.0f);
+        //     running_loss = 0.0f;
+        // }
     }
 
 }
