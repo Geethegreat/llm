@@ -12,18 +12,31 @@ typedef struct{
     int vocab_size, embedding_dim, hidden_dim, context_size;
 } Model;
 
+typedef struct{
+    Matrix X;  //flattened context embeddings
+    Matrix Z1;
+    Matrix H; //hidden layer after linear transformation
+    Matrix probs; //output probabilities after softmax
+} ForwardCache;
+
+typedef struct {
+    Matrix dC, dW1, dB1, dW2, dB2;
+} Gradients;
+
 
 Model model_create(int vocab_size, int embedding_dim, int hidden_dim, int context_size);
  
-Matrix model_forward(const Model* model, int* context_ids);
+void model_forward(const Model* model, int* context_ids, ForwardCache* cache);
 
-Matrix model_backward(Model* model, int* context_ids, int target_id, float learning_rate);
+Gradients model_backward(Model* model, ForwardCache* cache,  int* context_ids, int target_id);
 
-void model_update(Model* model, Matrix gradiens, float learning_rate);
+void model_update(Model* model, Gradients* grad, float lr);
 
 void model_save(const Model* model, const char* filename);
 
 float model_loss(const Matrix* pred, int target);
+
+float numerical_gradient_check(Model* model, float* param, int* context_ids, int target_id);
 
 void model_free(Model* model);
 
