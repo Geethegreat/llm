@@ -4,7 +4,7 @@
 #include "dataset.h"
 #include "string.h"
 #define CONTEXT_SIZE 8
-#define TEMPERATURE 0.3f
+#define TEMPERATURE 1.0f
 
 
 void generate_text(Model* model,Dataset* dataset,  const char* prompt, int length){
