@@ -9,7 +9,7 @@ void generate_text(Model* model,Dataset* dataset,  const char* prompt, int lengt
     int context_ids[CONTEXT_SIZE];
     int prompt_len = strlen(prompt);
 
-    if(prompt_len>CONTEXT_SIZE){
+    if(prompt_len < CONTEXT_SIZE){
         fprintf(stderr, " prompt must be atleast %d characters", CONTEXT_SIZE);
         return;
     }
@@ -22,7 +22,7 @@ void generate_text(Model* model,Dataset* dataset,  const char* prompt, int lengt
     printf("%s", prompt);
 
     for(int i =0 ;i<length;i++){
-        int next_id = model_predict(model, context_ids);
+        int next_id = model_sample(model, context_ids);
         char next_char = dataset_decode(dataset, next_id);
 
         printf("%c", next_char);
