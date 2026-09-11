@@ -59,10 +59,12 @@ void model_forward(const Model* model, int* context_ids, ForwardCache* cache){
         Matrix output_layer = matrix_multiply(&activated_hidden_layer, &model->W2);
 
         Matrix output_layer_with_bias = matrix_add(&output_layer, &model->B2);
-        matrix_free(&hidden_layer);
+        cache->logits = output_layer_with_bias;
         
         Matrix softmaxed_output = softmax(&output_layer_with_bias);
         cache->probs = softmaxed_output;
+        matrix_free(&hidden_layer);
+        matrix_free(&output_layer);
 }
 
 Gradients model_backward(Model* model, ForwardCache* cache,  int* context_ids, int target_id){
@@ -191,6 +193,33 @@ int model_sample(const Model* model, int* context_ids){
         }
     }
     
+}
+
+int model_sample_temperature(const Model* model, int* context_ids, float temperature){
+    ForwardCache cache;
+    model_forward(model, context_ids, &cache);
+
+    Matrix scaled = matrix_create(1, model->vocab_size);
+    for(int i =0;i<model->vocab_size;i++){
+        scaled.data[i]= cache.logits.data[i] / temperature;
+    }
+    Matrix probs_temp = softmax(&scaled);
+
+        float r = (float)rand() / (float)RAND_MAX;
+    float cumulative = 0.0f;
+    int chosen =model->vocab_size-1;
+
+    for(int i =0;i<model->vocab_size;i++){
+        cumulative += probs_temp.data[i];
+        if(r < cumulative){
+            chosen = i;
+            break;
+        }
+    }
+    matrix_free(&scaled); matrix_free(&probs_temp);
+    matrix_free(&cache.X); matrix_free(&cache.H); matrix_free(&cache.probs); matrix_free(&cache.logits);
+
+    return chosen;
 }
 
 void model_save(const Model* model, const char* filename, Dataset* dataset){

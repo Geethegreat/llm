@@ -18,6 +18,7 @@ typedef struct{
     Matrix Z1;
     Matrix H; //hidden layer after linear transformation
     Matrix probs; //output probabilities after softmax
+    Matrix logits;
 } ForwardCache;
 
 typedef struct {
@@ -46,6 +47,9 @@ int model_predict(const Model* model, int* context_ids);
 
 // random sampling
 int model_sample(const Model* model, int* context_ids);
+
+// temperature sampling
+int model_sample_temperature(const Model* model, int* context_ids, float temperature);
 
 void model_free(Model* model);
 

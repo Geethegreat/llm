@@ -3,7 +3,9 @@
 #include "model.h"
 #include "dataset.h"
 #include "string.h"
-#define CONTEXT_SIZE 4
+#define CONTEXT_SIZE 8
+#define TEMPERATURE 0.3f
+
 
 void generate_text(Model* model,Dataset* dataset,  const char* prompt, int length){
     int context_ids[CONTEXT_SIZE];
@@ -22,7 +24,7 @@ void generate_text(Model* model,Dataset* dataset,  const char* prompt, int lengt
     printf("%s", prompt);
 
     for(int i =0 ;i<length;i++){
-        int next_id = model_sample(model, context_ids);
+        int next_id = model_sample_temperature(model, context_ids, TEMPERATURE);
         char next_char = dataset_decode(dataset, next_id);
 
         printf("%c", next_char);
