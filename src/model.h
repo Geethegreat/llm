@@ -1,6 +1,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include "matrix.h"
+#include "dataset.h"
 
 typedef struct{
     Matrix C; // Embedding matrix/ vocabulary matrix
@@ -32,7 +33,9 @@ Gradients model_backward(Model* model, ForwardCache* cache,  int* context_ids, i
 
 void model_update(Model* model, Gradients* grad, float lr);
 
-void model_save(const Model* model, const char* filename);
+Model model_load(const char* filename, Dataset* dataset_out);
+
+void model_save(const Model* model, const char* filename, Dataset* dataset);
 
 float model_loss(const Matrix* pred, int target);
 

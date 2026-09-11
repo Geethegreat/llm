@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "matrix.h"
 #include "activations.h"
 #include "dataset.h"
@@ -173,6 +174,52 @@ int model_predict(const Model* model, int* context_ids){
     return best_id;
 }
 
+void model_save(const Model* model, const char* filename, Dataset* dataset){
+    FILE* f = fopen(filename, "wb");
+    if(!f){fprintf(stderr, "could not open %s for writing\n", filename); exit(EXIT_FAILURE);}
+
+    fwrite(&model->vocab_size, sizeof(int), 1, f);
+    fwrite(&model->embedding_dim, sizeof(int), 1, f);
+    fwrite(&model->hidden_dim, sizeof(int), 1, f);
+    fwrite(&model->context_size, sizeof(int), 1, f);
+
+    fwrite(model->C.data,  sizeof(float), model->C.rows  * model->C.cols,  f);
+    fwrite(model->W1.data, sizeof(float), model->W1.rows * model->W1.cols, f);
+    fwrite(model->B1.data, sizeof(float), model->B1.rows * model->B1.cols, f);
+    fwrite(model->W2.data, sizeof(float), model->W2.rows * model->W2.cols, f);
+    fwrite(model->B2.data, sizeof(float), model->B2.rows * model->B2.cols, f);
+
+    fwrite(dataset->vocab, sizeof(char), dataset->vocab_size, f);
+    fclose(f);
+}
+
+Model model_load(const char* filename, Dataset* dataset_out){
+    FILE* f = fopen(filename, "rb");
+    if(!f){fprintf(stderr, "could not open %s for reading\n", filename); exit(EXIT_FAILURE);}
+
+    int vocab_size, embedding_dim, hidden_dim, context_size;
+    fread(&vocab_size, sizeof(int), 1, f);
+    fread(&embedding_dim, sizeof(int), 1, f);
+    fread(&hidden_dim, sizeof(int), 1, f);
+    fread(&context_size, sizeof(int), 1, f);
+
+    Model model = model_create(vocab_size, embedding_dim, hidden_dim, context_size);
+
+    fread(model.C.data,  sizeof(float), model.C.rows  * model.C.cols,  f);
+    fread(model.W1.data, sizeof(float), model.W1.rows * model.W1.cols, f);
+    fread(model.B1.data, sizeof(float), model.B1.rows * model.B1.cols, f);
+    fread(model.W2.data, sizeof(float), model.W2.rows * model.W2.cols, f);
+    fread(model.B2.data, sizeof(float), model.B2.rows * model.B2.cols, f);
+
+    dataset_out->vocab_size = vocab_size;
+    dataset_out->vocab = malloc(vocab_size * sizeof(char));
+    fread(dataset_out->vocab, sizeof(char), vocab_size, f);
+    dataset_out->text = NULL;      // not needed for generation, only training
+    dataset_out->text_length = 0;
+
+    fclose(f);
+    return model;
+}
 
 float model_loss(const Matrix* pred, int target){
     float p = pred->data[target];
