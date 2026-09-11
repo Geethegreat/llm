@@ -174,6 +174,25 @@ int model_predict(const Model* model, int* context_ids){
     return best_id;
 }
 
+// as greedy decoding results in repetition use random sampling
+int model_sample(const Model* model, int* context_ids){
+    ForwardCache cache;
+    model_forward(model, context_ids, &cache);
+
+    float r = (float)rand() / (float)RAND_MAX;
+    float cumulative = 0.0f;
+    int chosen =model->vocab_size-1;
+
+    for(int i =0;i<model->vocab_size;i++){
+        cumulative += cache.probs.data[i];
+        if(r < cumulative){
+            chosen = i;
+            break;
+        }
+    }
+    
+}
+
 void model_save(const Model* model, const char* filename, Dataset* dataset){
     FILE* f = fopen(filename, "wb");
     if(!f){fprintf(stderr, "could not open %s for writing\n", filename); exit(EXIT_FAILURE);}
