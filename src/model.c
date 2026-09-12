@@ -274,3 +274,16 @@ float model_loss(const Matrix* pred, int target){
     return -logf(p + 1e-9f);
 }
 
+
+void model_free(Model* model){
+    model->context_size=0;
+    model->embedding_dim=0;
+    model->hidden_dim=0;
+    model->vocab_size=0;
+    matrix_free(&model->W1);
+    matrix_free(&model->B1);
+    matrix_free(&model->W2);
+    matrix_free(&model->B2);
+    matrix_free(&model->C);
+    free(model);
+}
