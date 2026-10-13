@@ -17,7 +17,7 @@ O, RomU: Fow, le harm af goone though aplied sile of the thit
 
 Not Shakespeare, but it has learned English-looking words, speaker names, colons, line breaks and verse-style formatting from raw characters alone.
 
-**Video:** [Building an LLM from scratch in C](https://youtube.com/) <!-- replace with your video link -->
+**Video:** [Building an LLM from scratch in C](https://youtu.be/iVKCOAcnMDI)
 
 ## Highlights
 
