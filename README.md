@@ -158,4 +158,4 @@ Built while studying Andrej Karpathy's [makemore](https://github.com/karpathy/ma
 
 ## License
 
-Add a `LICENSE` file before publishing (MIT is a common choice for projects like this).
+MIT. See [LICENSE](LICENSE) for details.
